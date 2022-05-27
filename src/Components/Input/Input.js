@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Input = styled.input`
+const Input = styled.input`
   width: 100%;
   height: 45px;
 
@@ -34,3 +34,5 @@ export const Input = styled.input`
     color: var(--dark-gray-2);
   }
 `;
+
+export default Input;

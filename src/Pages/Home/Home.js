@@ -2,18 +2,25 @@ import React from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import FormButton from "../../Components/FormButton/FormButton";
-import { Input } from "../../Components/Input/Input";
-import { Logo } from "../../Components/Logo/Logo";
-import { Page } from "../../Layouts/Page/Page";
+import Form from "../../Components/Form/Form";
+import Logo from "../../Components/Logo/Logo";
+import Page from "../../Layouts/Page/Page";
+import { useUserContext } from "../../Contexts/UserContext";
 
 export default function Home() {
   const navigate = useNavigate();
-  const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+  const UserContext = useUserContext();
 
+  React.useEffect(() => {
+    const user = UserContext.user;
+    if (user) {
+      navigate("/today");
+    }
+  }, [UserContext, navigate]);
+
+  const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
   const [disabled, setDisabled] = React.useState(false);
 
   function handleSubmit(e) {
@@ -27,44 +34,56 @@ export default function Home() {
 
     const promise = axios.post(URL, data);
     promise.then((res) => {
-      navigate("/today", res.data);
+      UserContext.setUser(res.data);
+      navigate("/today");
     });
-
     promise.catch((err) => {
       alert(err.response.data.message);
       setDisabled(false);
     });
   }
 
+  const formData = {
+    form: {
+      onSubmit: (e) => {
+        handleSubmit(e);
+      },
+    },
+    inputs: [
+      {
+        onChange: (e) => {
+          setEmail(e.target.value);
+        },
+        value: email,
+        placeholder: "email",
+        type: "email",
+        required: true,
+        disabled,
+        autoComplete: "email",
+      },
+      {
+        onChange: (e) => {
+          setPassword(e.target.value);
+        },
+        value: password,
+        placeholder: "senha",
+        type: "password",
+        required: true,
+        disabled,
+        autoComplete: "password",
+      },
+    ],
+    button: {
+      text: "Entrar",
+      disabled,
+    },
+  };
+
   return (
     <Container>
       <Page>
         <Logo />
-        <Form onSubmit={handleSubmit}>
-          <Input
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            value={email}
-            placeholder="email"
-            type="email"
-            required
-            disabled={disabled}
-            autoComplete="email"
-          />
-          <Input
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            value={password}
-            placeholder="senha"
-            type="password"
-            required
-            disabled={disabled}
-            autoComplete="password"
-          />
-          <FormButton disabled={disabled}>Entrar</FormButton>
-        </Form>
+        <Form data={formData} />
         <Link to="/sing_up">Não tem uma conta? Cadastre-se!</Link>
       </Page>
     </Container>
@@ -79,11 +98,4 @@ const Container = styled.div`
   box-sizing: border-box;
 
   text-align: center;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 25px;
 `;
