@@ -26,7 +26,7 @@ export default function Footer() {
           })}
         />
       </Link>
-      <Link className="button" to="/">
+      <Link className="button" to="/history">
         Histórico
       </Link>
     </Container>

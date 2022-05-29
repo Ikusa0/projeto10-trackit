@@ -19,7 +19,7 @@ export default function Today() {
 
   React.useEffect(() => {
     TodayHabitsContext.updateTodayHabits();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
