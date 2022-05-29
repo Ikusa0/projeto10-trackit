@@ -7,7 +7,6 @@ import Page from "../../Layouts/Page/Page";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import TodayHabit from "../../Components/TodayHabit/TodayHabit";
-import Loading from "../../Components/Loading/Loading";
 
 export default function Today() {
   const TodayHabitsContext = useTodayHabitsContext();
@@ -36,11 +35,9 @@ export default function Today() {
             <h2>{percentConcluded}% dos hábitos concluídos</h2>
           )}
         </div>
-        {todayHabits.length > 0 ? (
-          todayHabits.map((habit, index) => <TodayHabit key={index} habit={habit} />)
-        ) : (
-          <Loading />
-        )}
+        {todayHabits.map((habit, index) => (
+          <TodayHabit key={index} habit={habit} />
+        ))}
         <Footer />
       </Page>
     </Container>
