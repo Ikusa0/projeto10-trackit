@@ -70,7 +70,6 @@ const Container = styled.div`
   }
 
   .no-habits {
-    color: var(--dark-gray-1);
     font-weight: 400;
     font-size: 18px;
     line-height: 22px;

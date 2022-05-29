@@ -7,14 +7,16 @@
   --light-gray-1: #dbdbdb;
   --light-gray-2: #d4d4d4;
   --light-gray-3: #f2f2f2;
+  --light-gray-4: #bababa;
   --dark-blue: #126ba5;
   --light-blue-1: #52b6ff;
   --light-blue-2: #379ce4;
+  --lime-green: #8fc549;
 }
 
 body {
   font-family: "Lexend Deca", sans-serif;
-  color: var(--dark-gray);
+  color: var(--dark-gray-1);
 }
 
 a {

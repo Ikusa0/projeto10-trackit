@@ -5,10 +5,12 @@ import Input from "../Input/Input";
 import Button from "../Button/Button";
 import axios from "axios";
 import { useUserContext } from "../../Contexts/UserContext";
+import { useHabitsContext } from "../../Contexts/HabitsContext";
 
 export default function CreateHabit({ setShow, show }) {
   const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
   const user = useUserContext().user;
+  const HabitsContext = useHabitsContext();
 
   const [disabled, setDisabled] = React.useState(false);
   const [weekdays, setWeekdays] = React.useState([
@@ -69,6 +71,7 @@ export default function CreateHabit({ setShow, show }) {
       isSelected: false,
     },
   ]);
+  const [habits, setHabits] = [HabitsContext.habits, HabitsContext.setHabits];
   const [habit, setHabit] = React.useState("");
 
   function changeWeekday(index) {
@@ -105,12 +108,14 @@ export default function CreateHabit({ setShow, show }) {
     };
 
     const promise = axios.post(URL, data, authorization);
-    promise.then(() => {
-      setDisabled(false);
+    promise.then((res) => {
+      setHabits([...habits, res.data]);
       resetInputs();
     });
     promise.catch((err) => {
       alert(err.response.data.message);
+    });
+    promise.finally(() => {
       setDisabled(false);
     });
   }

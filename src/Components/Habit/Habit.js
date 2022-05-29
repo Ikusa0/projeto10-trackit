@@ -5,53 +5,14 @@ import axios from "axios";
 import { useHabitsContext } from "../../Contexts/HabitsContext";
 import { BsTrash } from "react-icons/bs";
 import { useUserContext } from "../../Contexts/UserContext";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
 
 export default function Habit({ habit }) {
   const HabitsContext = useHabitsContext();
   const user = useUserContext().user;
   const [habits, setHabits] = [HabitsContext.habits, HabitsContext.setHabits];
-  const [weekdays, setWeekdays] = React.useState([
-    {
-      text: "D",
-      day: 0,
-      isSelected: false,
-    },
-    {
-      text: "S",
-      day: 1,
-      isSelected: false,
-    },
-    {
-      text: "T",
-      day: 2,
-      isSelected: false,
-    },
-    {
-      text: "Q",
-      day: 3,
-      isSelected: false,
-    },
-    {
-      text: "Q",
-      day: 4,
-      isSelected: false,
-    },
-    {
-      text: "S",
-      day: 5,
-      isSelected: false,
-    },
-    {
-      text: "S",
-      day: 6,
-      isSelected: false,
-    },
-  ]);
-
-  React.useEffect(() => {
-    habit.days.forEach((day) => (weekdays[day].isSelected = true));
-    setWeekdays([...weekdays]);
-  }, [habit]);
+  const weekdays = generateWeekdays(habit.days);
 
   function deleteHabit() {
     if (!window.confirm(`Deseja realmente deletar o hábito "${habit.name}"?`)) return;
@@ -61,8 +22,7 @@ export default function Habit({ habit }) {
 
     const promise = axios.delete(URL, authorization);
     promise.then(() => {
-      habits.filter((habit_callback) => habit_callback.id !== habit.id);
-      setHabits([...habits]);
+      setHabits(habits.filter((habit_callback) => habit_callback.id !== habit.id));
     });
     promise.catch((err) => {
       alert(err.response.data.message);
@@ -78,6 +38,24 @@ export default function Habit({ habit }) {
   );
 }
 
+function generateWeekdays(daysActive) {
+  const weekday = require("dayjs/plugin/weekday");
+  dayjs.extend(weekday);
+
+  const weekdays = [];
+  for (let i = 0; i < 7; i++) {
+    weekdays.push({
+      text: dayjs().weekday(i).locale("pt-br").format("dddd")[0].toUpperCase(),
+      day: 0,
+      isSelected: false,
+    });
+  }
+
+  daysActive.forEach((day) => (weekdays[day].isSelected = true));
+
+  return weekdays;
+}
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,7 +63,7 @@ const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   background-color: white;
   border-radius: 5px;
   gap: 8px;
@@ -96,7 +74,6 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 20px;
     line-height: 25px;
-    color: var(--dark-gray-1);
   }
 
   .icon {
@@ -104,7 +81,6 @@ const Container = styled.div`
     top: 10px;
     right: 10px;
     font-size: 16px;
-    color: var(--dark-gray-1);
     cursor: pointer;
   }
 `;

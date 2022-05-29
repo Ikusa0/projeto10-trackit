@@ -13,7 +13,7 @@ const Input = styled.input`
   font-weight: 400;
   font-size: 20px;
   line-height: 25px;
-  color: var(--dark-gray-1);
+  color: inherit;
 
   padding: 11px;
 

@@ -21,7 +21,7 @@ export default function HabitsProvider({ children }) {
     promise.then((res) => {
       setHabits(res.data);
     });
-  }, [habits, user]);
+  }, [user]);
 
   return <HabitsContext.Provider value={{ habits, setHabits }}>{children}</HabitsContext.Provider>;
 }

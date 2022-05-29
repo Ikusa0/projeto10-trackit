@@ -5,19 +5,22 @@ import Habits from "./Pages/Habits/Habits";
 import Today from "./Pages/Today/Today";
 import UserProvider from "./Contexts/UserContext";
 import HabitsProvider from "./Contexts/HabitsContext";
+import TodayHabitsProvider from "./Contexts/TodayHabitsContext";
 
 export default function App() {
   return (
     <UserProvider>
       <HabitsProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/sing_up" element={<SingUp />} />
-            <Route path="/habits" element={<Habits />} />
-            <Route path="/today" element={<Today />} />
-          </Routes>
-        </BrowserRouter>
+        <TodayHabitsProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/sing_up" element={<SingUp />} />
+              <Route path="/habits" element={<Habits />} />
+              <Route path="/today" element={<Today />} />
+            </Routes>
+          </BrowserRouter>
+        </TodayHabitsProvider>
       </HabitsProvider>
     </UserProvider>
   );
