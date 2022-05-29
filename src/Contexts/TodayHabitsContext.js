@@ -11,7 +11,7 @@ export default function TodayHabitsProvider({ children }) {
   const user = useUserContext().user;
   const [todayHabits, setTodayHabits] = React.useState([]);
   const [concluded, setConcluded] = React.useState(0);
-  const percentConcluded = Math.round((concluded / todayHabits.length || 0) * 100);
+  const percentConcluded = todayHabits.length > 0 ? Math.round((concluded / todayHabits.length) * 100) : 0;
 
   const updateTodayHabits = React.useCallback(() => {
     if (!user) return;

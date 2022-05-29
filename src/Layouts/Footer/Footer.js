@@ -1,11 +1,34 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { useTodayHabitsContext } from "../../Contexts/TodayHabitsContext";
 
 export default function Footer() {
+  const percentConcluded = useTodayHabitsContext().percentConcluded;
+
   return (
     <Container>
-      <Link to="/habits">Hábitos</Link>
-      <Link to="/">Histórico</Link>
+      <Link className="button" to="/habits">
+        Hábitos
+      </Link>
+      <Link className="progressbar-container" to="/today">
+        <CircularProgressbar
+          value={percentConcluded}
+          text="Hoje"
+          background
+          backgroundPadding={6}
+          styles={buildStyles({
+            backgroundColor: "var(--light-blue-1)",
+            textColor: "#fff",
+            pathColor: "#fff",
+            trailColor: "transparent",
+          })}
+        />
+      </Link>
+      <Link className="button" to="/">
+        Histórico
+      </Link>
     </Container>
   );
 }
@@ -25,7 +48,13 @@ const Container = styled.div`
   padding: 0 15px;
   box-sizing: border-box;
 
-  a {
+  .progressbar-container {
+    width: 91px;
+    height: 91px;
+    transform: translateY(-25%);
+  }
+
+  .button {
     width: 100px;
     padding: 10px 0;
     box-sizing: border-box;
@@ -44,7 +73,7 @@ const Container = styled.div`
     border-radius: 8px;
   }
 
-  a:hover {
+  .button:hover {
     background-color: var(--light-blue-1);
     color: white;
   }
