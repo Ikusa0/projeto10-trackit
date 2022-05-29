@@ -19,13 +19,14 @@ export default function Today() {
     const calendarDay = dayjs(date).format("DD/MM/YYYY");
     for (let day of history) {
       if (calendarDay === day.day) {
-        if (day.habits.every((habit) => habit.done)) {
-          return <div className="finished">{day.day.slice(0, 2)}</div>;
-        }
-        return <div className="unfinished">{day.day.slice(0, 2)}</div>;
+        return (
+          <div className={day.habits.every((habit) => habit.done) ? "finished" : "unfinished"} onClick={console.log}>
+            {day.day.slice(0, 2)}
+          </div>
+        );
       }
     }
-    return calendarDay.slice(0, 2);
+    return <div className="no-habits">{calendarDay.slice(0, 2)}</div>;
   }
 
   React.useEffect(() => {
@@ -87,13 +88,19 @@ const Container = styled.div`
     border-radius: 10px;
 
     .finished,
-    .unfinished {
+    .unfinished,
+    .no-habits {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
       height: 100%;
       border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .finished,
+    .unfinished {
       color: white;
     }
 
@@ -130,13 +137,26 @@ const Container = styled.div`
       height: 55px;
       color: inherit;
     }
+
+    .react-calendar__tile:enabled:hover,
+    .react-calendar__tile:enabled:focus {
+      background-color: inherit;
+      .no-habits {
+        background-color: var(--light-gray-1);
+      }
+    }
+
+    button.react-calendar__month-view__days__day:enabled:hover {
+      cursor: initial;
+    }
+
     .react-calendar__month-view__days__day--weekend {
       color: red;
     }
 
     .react-calendar__month-view__days__day--neighboringMonth {
       color: #757575;
-      background-color: var(--light-gray-1);
+      background-color: var(--light-gray-1) !important;
     }
 
     .react-calendar__tile--active {
