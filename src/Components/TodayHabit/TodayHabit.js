@@ -50,7 +50,7 @@ export default function TodayHabit({ habit, updatePercentConcluded }) {
           Sequência atual: <span className={habit.done ? "done" : ""}>{habit.currentSequence}</span>
         </span>
         <span className="streak">
-          Sequência atual:{" "}
+          Seu recorde:{" "}
           <span className={habit.highestSequence === habit.currentSequence ? "done" : ""}>{habit.highestSequence}</span>
         </span>
       </div>
