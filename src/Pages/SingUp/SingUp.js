@@ -34,7 +34,7 @@ export default function SingUp() {
       navigate("/");
     });
     promise.catch((err) => {
-      err.response.status === 422 ? alert("A foto precisa ser um link!") : alert(err.response.data.message);
+      alert(err.response.data.details[0]);
       setDisabled(false);
     });
   }
