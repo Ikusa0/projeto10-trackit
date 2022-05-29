@@ -3,14 +3,17 @@ import styled from "styled-components";
 import WeekCheckboxContainer from "../WeekCheckboxContainer/WeekCheckboxContainer";
 import axios from "axios";
 import { useHabitsContext } from "../../Contexts/HabitsContext";
-import { BsTrash } from "react-icons/bs";
 import { useUserContext } from "../../Contexts/UserContext";
+import { useTodayHabitsContext } from "../../Contexts/TodayHabitsContext";
+import { BsTrash } from "react-icons/bs";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 
 export default function Habit({ habit }) {
-  const HabitsContext = useHabitsContext();
   const user = useUserContext().user;
+  const HabitsContext = useHabitsContext();
+  const TodayHabitsContext = useTodayHabitsContext();
+
   const [habits, setHabits] = [HabitsContext.habits, HabitsContext.setHabits];
   const weekdays = generateWeekdays(habit.days);
 
@@ -23,6 +26,7 @@ export default function Habit({ habit }) {
     const promise = axios.delete(URL, authorization);
     promise.then(() => {
       setHabits(habits.filter((habit_callback) => habit_callback.id !== habit.id));
+      TodayHabitsContext.updateTodayHabits();
     });
     promise.catch((err) => {
       alert(err.response.data.message);

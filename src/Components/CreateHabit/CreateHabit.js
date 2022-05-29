@@ -6,11 +6,13 @@ import Button from "../Button/Button";
 import axios from "axios";
 import { useUserContext } from "../../Contexts/UserContext";
 import { useHabitsContext } from "../../Contexts/HabitsContext";
+import { useTodayHabitsContext } from "../../Contexts/TodayHabitsContext";
 
 export default function CreateHabit({ setShow, show }) {
   const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
   const user = useUserContext().user;
   const HabitsContext = useHabitsContext();
+  const TodayHabitsContext = useTodayHabitsContext();
 
   const [disabled, setDisabled] = React.useState(false);
   const [weekdays, setWeekdays] = React.useState([
@@ -111,6 +113,7 @@ export default function CreateHabit({ setShow, show }) {
     promise.then((res) => {
       setHabits([...habits, res.data]);
       resetInputs();
+      TodayHabitsContext.updateTodayHabits();
     });
     promise.catch((err) => {
       alert(err.response.data.message);
