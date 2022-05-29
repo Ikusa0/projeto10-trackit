@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Form from "../../Components/Form/Form";
 import Logo from "../../Components/Logo/Logo";
 import Page from "../../Layouts/Page/Page";
+import { BsFileEarmarkArrowUpFill } from "react-icons/bs";
 
 export default function SingUp() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function SingUp() {
       navigate("/");
     });
     promise.catch((err) => {
-      alert(err.response.data.message);
+      err.response.status === 422 ? alert("A foto precisa ser um link!") : alert(err.response.data.message);
       setDisabled(false);
     });
   }
