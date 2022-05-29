@@ -9,24 +9,36 @@ import Footer from "../../Layouts/Footer/Footer";
 import Header from "../../Layouts/Header/Header";
 import Page from "../../Layouts/Page/Page";
 import { useUserContext } from "../../Contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Today() {
+export default function History() {
   const user = useUserContext().user;
+  const navigate = useNavigate();
   const [history, setHistory] = React.useState([]);
   const [date, setDate] = React.useState(new Date());
 
+  function goToDay(calendarDay, habits) {
+    const day = calendarDay.format("DD-MM-YYYY");
+    navigate(`/day/${day}`, { state: { habits, calendarDay: calendarDay.format() } });
+  }
+
   function dayFormatter(locale, date) {
-    const calendarDay = dayjs(date).format("DD/MM/YYYY");
+    const calendarDay = dayjs(date).locale("pt-br");
     for (let day of history) {
-      if (calendarDay === day.day) {
+      if (calendarDay.format("DD/MM/YYYY") === day.day) {
         return (
-          <div className={day.habits.every((habit) => habit.done) ? "finished" : "unfinished"} onClick={console.log}>
+          <div
+            className={day.habits.every((habit) => habit.done) ? "finished" : "unfinished"}
+            onClick={() => {
+              goToDay(calendarDay, day.habits);
+            }}
+          >
             {day.day.slice(0, 2)}
           </div>
         );
       }
     }
-    return <div className="no-habits">{calendarDay.slice(0, 2)}</div>;
+    return <div className="no-habits">{calendarDay.format("DD")}</div>;
   }
 
   React.useEffect(() => {
@@ -164,13 +176,12 @@ const Container = styled.div`
     }
 
     .react-calendar__tile--now {
-      background-color: var(--light-blue-1);
+      background-color: var(--light-blue-1) !important;
       color: white;
     }
 
     .react-calendar__tile--now.react-calendar__month-view__days__day--neighboringMonth {
-      background-color: var(--light-blue-2);
-      filter: brightness(90%);
+      background-color: var(--light-blue-3) !important;
     }
   }
 `;

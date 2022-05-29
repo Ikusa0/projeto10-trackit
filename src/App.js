@@ -4,6 +4,7 @@ import SingUp from "./Pages/SingUp/SingUp";
 import Habits from "./Pages/Habits/Habits";
 import History from "./Pages/History/History";
 import Today from "./Pages/Today/Today";
+import Day from "./Pages/Day/Day";
 import UserProvider from "./Contexts/UserContext";
 import HabitsProvider from "./Contexts/HabitsContext";
 import TodayHabitsProvider from "./Contexts/TodayHabitsContext";
@@ -20,6 +21,7 @@ export default function App() {
               <Route path="/habits" element={<Habits />} />
               <Route path="/today" element={<Today />} />
               <Route path="/history" element={<History />} />
+              <Route path="/day/:date" element={<Day />} />
             </Routes>
           </BrowserRouter>
         </TodayHabitsProvider>
